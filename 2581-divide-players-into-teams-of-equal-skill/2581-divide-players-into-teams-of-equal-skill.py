@@ -1,25 +1,15 @@
 class Solution:
-    def dividePlayers(self, skill: List[int]) -> int:
-        total_sum = sum(skill)              # Total sum
-        n = len(skill)
-        
-        total_no = n//2              # No of pairs
-                
-        desired = total_sum // total_no        # Desired sum of each pair
-                
-        skill.sort()
-        
-        chemistry_tot = 0
-        
-        l = 0                           # Two Pointer (Two Sum)             
-        r = n-1
-        
-        while l<r:
-            if skill[l]+skill[r]==desired:
-                chemistry_tot+=skill[l]*skill[r]
+    def dividePlayers(self, nums: List[int]) -> int:
+        nums.sort()
+        l,r = 0, len(nums)-1
+        s = 0
+        n = nums[l] + nums[r]
+        while l < r:
+            if (nums[l] + nums[r]) == n:
+                s += (nums[l] * nums[r])
+                l += 1
+                r -= 1
             else:
                 return -1
-            l+=1
-            r-=1
-            
-        return chemistry_tot
+        return s
+

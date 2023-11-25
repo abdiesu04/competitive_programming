@@ -14,4 +14,4 @@ class NumArray:
         else:
             return self.cum_sum[right] - self.cum_sum[left-1]
         
-    #range-sum-query-immutablle
+    #range-sum

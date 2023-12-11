@@ -1,17 +1,25 @@
-def main():
-    n, wd, brdu = map(int, input().split())
-    rn = 0
-    br = 0
+n, l, a = map(int, input().split())
 
-    for i in range(n):
-        x, y = map(int, input().split())
-        msh = x - rn
-        br += msh // brdu
-        rn = x + y
+nums = [0] * (l+1)
 
-    msh = wd - rn
-    br += msh // brdu
+for _ in range(n):
+    s, t = map(int, input().split())
+    for i in range(s, s + t):
+        nums[i] = 1
 
-    print(br)
+tmp = 0
+cnt = 0
 
-main()
+for i in range(len(nums)):
+    if nums[i] == 0:
+        tmp += 1
+        if tmp == a:
+            cnt += 1
+            tmp = 0
+    else:
+        tmp = 0
+
+if n == 0:
+    print(a)
+else:
+    print(cnt)

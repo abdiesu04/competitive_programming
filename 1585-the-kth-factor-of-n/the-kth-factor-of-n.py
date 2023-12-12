@@ -7,3 +7,4 @@ class Solution:
                 if fact_count == k:
                     return i
         return -1
+        

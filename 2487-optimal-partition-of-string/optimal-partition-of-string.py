@@ -1,11 +1,13 @@
 class Solution:
     def partitionString(self, s: str) -> int:
-        st = set(())
         ans = 0
-        for i in range(len(s)):
-            if s[i] in st:
-                st.clear()
+        stack = []
+        for i in s:
+            if i not in stack:
+                stack.append(i)
+            else:
                 ans += 1
-            st.add(s[i])
-        ans += 1
-        return ans
+                stack = [i]
+
+        
+        return ans + 1

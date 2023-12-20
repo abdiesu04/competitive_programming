@@ -1,9 +1,9 @@
 class Solution:
     def longestCommonPrefix(self, strs: List[str]) -> str:
-        res = ""
-        for a in zip(*strs):
-            if len(set(a)) == 1:
-                res += a[0]
-            else:
-                return res
+        res = ''
+        for i in range(len(strs[0])):
+            for word in strs:
+                if i == len(word) or strs[0][i] != word[i]:
+                    return res
+            res += word[i]
         return res

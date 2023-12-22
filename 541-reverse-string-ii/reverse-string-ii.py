@@ -1,14 +1,21 @@
+# class Solution:
+#     def reverseStr(self, s: str, k: int) -> str:
+#         if k > len(s):
+#             return s[::-1]
+#         s = list(s)
+#         res = []
+#         for i in range(0, len(s), 2 * k):
+#             res.append(s[i:i+k][::-1])
+#             res.append(s[i+k:i+2*k])
+#         return ''.join(res)
+
 class Solution:
     def reverseStr(self, s: str, k: int) -> str:
-        result = []
-
-        for i in range(0, len(s), k):
-            w = s[i: i+k]
-
-            if len(result) % 2 == 0:
-                w = w[::-1]
-            
-            result.append(w)
-
-        return ''.join(result)
-        
+        if k > len(s):
+            return s[::-1]
+        s = list(s)
+        res = []
+        for i in range(0, len(s), 2 * k):
+            res.append(''.join(s[i:i+k][::-1]))
+            res.append(''.join(s[i+k:i+2*k]))
+        return ''.join(res)

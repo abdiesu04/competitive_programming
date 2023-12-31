@@ -1,19 +1,23 @@
 class Solution:
     def distance(self, nums: List[int]) -> List[int]:
-        distances = defaultdict(list)
-        for index, num in enumerate(nums):
-            distances[num].append(index) 
-        output = [0] * len(nums)
-        for values in distances.values():
-            n = len(values)
-            if n > 1:
-                rSum = sum(values)
-                lSum = 0
-                prevVal = 0
-                for i, val in enumerate(values):
-                    dist = val - prevVal
-                    rSum -= (n-i) * dist
-                    lSum += dist * i
-                    prevVal = val
-                    output[val] = rSum + lSum
-        return output
+        res = [None] * len(nums)
+        count_dict = defaultdict(list)
+
+        for i, num in enumerate(nums):
+            count_dict[num].append(i)
+
+        for key, values in count_dict.items():
+            if len(values) == 1:
+                res[values[0]] = 0
+            else:
+                suffix_sum = sum(values)
+                prefix_sum = 0
+
+                for i in range(len(values)):
+                    cur_idx = count_dict[key][i]
+                    cur_sum = (i * cur_idx - prefix_sum) + (suffix_sum - cur_idx - (len(values) - 1 - i) * cur_idx) 
+                    res[cur_idx] = cur_sum
+                    prefix_sum += cur_idx
+                    suffix_sum -= cur_idx
+        
+        return res

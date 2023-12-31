@@ -1,23 +1,26 @@
+from collections import defaultdict
+
 class Solution:
     def distance(self, nums: List[int]) -> List[int]:
-        res = [None] * len(nums)
-        count_dict = defaultdict(list)
+        d={}
+        for i,num in enumerate(nums):
+            if num not in d:
+                d[num]=[]
+            d[num].append(i)
 
-        for i, num in enumerate(nums):
-            count_dict[num].append(i)
+        print(d)
 
-        for key, values in count_dict.items():
-            if len(values) == 1:
-                res[values[0]] = 0
-            else:
-                suffix_sum = sum(values)
-                prefix_sum = 0
-
-                for i in range(len(values)):
-                    cur_idx = count_dict[key][i]
-                    cur_sum = (i * cur_idx - prefix_sum) + (suffix_sum - cur_idx - (len(values) - 1 - i) * cur_idx) 
-                    res[cur_idx] = cur_sum
-                    prefix_sum += cur_idx
-                    suffix_sum -= cur_idx
+        answ=[0]*len(nums)
         
-        return res
+        for num,val in d.items():
+            suffixSum=sum(val)
+            preffixSum=0
+            s=len(val)
+            p=0
+            for i in val:
+                preffixSum+=i
+                p+=1
+                suffixSum-=i
+                s-=1
+                answ[i]=-preffixSum + p*i - s*i + suffixSum
+        return answ    

@@ -17,19 +17,24 @@
 #         """Decodes a shortened URL to its original URL.
 #         """
 #         return self.decodeMap[shortUrl]
+import random
+
 class Codec:
 
+    res = {}
+    chars = 'abcdefghijklmnopqrstuvwxvz'
     def encode(self, longUrl: str) -> str:
         """Encodes a URL to a shortened URL.
-        
         """
-        return longUrl
-        
+        url = "http://tinyurl.com/" + ''.join(random.choice(self.chars) for _ in range(5))
 
+        self.res[url] = longUrl
+
+        return url
     def decode(self, shortUrl: str) -> str:
         """Decodes a shortened URL to its original URL.
         """
-        return shortUrl
+        return self.res[shortUrl]
         
 
 # Your Codec object will be instantiated and called as such:

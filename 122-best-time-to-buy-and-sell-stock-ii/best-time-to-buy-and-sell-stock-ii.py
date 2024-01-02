@@ -3,8 +3,6 @@ class Solution:
         
         if len(prices) <=1:
             return 0
-
-         
         profit = 0
 
         for i in range(len(prices)-1):

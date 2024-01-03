@@ -1,11 +1,13 @@
 class Solution:
     def minSwaps(self, s: str) -> int:
-        mx = 0 
-        cnt = 0
-        for i in s:
-            if i == '[':
-                cnt -= 1
+        stack = []
+        for val in s:
+            if not stack:
+                stack.append(val)
             else:
-                cnt += 1
-            mx = max(cnt , mx)
-        return (mx + 1) //2
+                if stack[-1] == "[" and val == "]":
+                    stack.pop()
+                else:
+                    stack.append(val)
+        b_val = stack.count("[")
+        return (b_val + 1) // 2

@@ -1,15 +1,28 @@
+from typing import List
+
 class Solution:
     def findWinners(self, matches: List[List[int]]) -> List[List[int]]:
-        dc=defaultdict(lambda:[0,0])
-        for a in matches:
-            dc[a[0]][0]+=1
-            dc[a[1]][1]+=1
-        ans=[[],[]]
-        for a in dc:
-            if(dc[a][1]==0):
-                ans[0].append(a)
-            if(dc[a][1]==1):
-                ans[1].append(a)
-        ans[0].sort()
-        ans[1].sort()
-        return ans
+        zeroLoss, oneLoss, moreLoss = set(), set(), set()
+
+        for match in matches:
+            winner, loser = match[0], match[1]
+
+            # Add winner.
+            if winner not in oneLoss and winner not in moreLoss:
+                zeroLoss.add(winner)
+
+            # Add or move loser.
+            if loser in zeroLoss:
+                zeroLoss.remove(loser)
+                oneLoss.add(loser)
+            elif loser in oneLoss:
+                oneLoss.remove(loser)
+                moreLoss.add(loser)
+            elif loser in moreLoss:
+                continue
+            else:
+                oneLoss.add(loser)
+
+        answer = [sorted(list(zeroLoss)), sorted(list(oneLoss))]
+        return answer
+

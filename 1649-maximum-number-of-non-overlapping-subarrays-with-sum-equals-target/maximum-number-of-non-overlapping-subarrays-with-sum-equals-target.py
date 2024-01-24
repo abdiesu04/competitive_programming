@@ -1,14 +1,13 @@
 class Solution:
     def maxNonOverlapping(self, nums, target):
-        res = 0
-        preSum = set()
-        preSum.add(0)
-        prev = 0
-        for i in range(len(nums)):
-            val = prev + nums[i]
-            if val - target in preSum:
-                res += 1
-                preSum = set()
-            preSum.add(val)
-            prev = val
-        return res
+        num_set = set()
+        num_set.add(0)
+        count = 0
+        total_sum = 0
+        for num in nums:
+            total_sum += num
+            if total_sum - target in num_set:
+                count += 1
+                num_set = set()
+            num_set.add(total_sum)
+        return count

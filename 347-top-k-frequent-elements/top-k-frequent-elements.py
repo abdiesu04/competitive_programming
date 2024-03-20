@@ -1,12 +1,18 @@
-from collections import defaultdict
-
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
-        mapp = defaultdict(int)
-        for i in nums:
-            mapp[i] += 1
+        freq = Counter(nums)
+        max_ = max(freq.values())
         res = []
-        mapp = sorted(mapp.items(), key=lambda item: item[1], reverse=True)
-        for i in range(k):
-            res.append(mapp[i][0])
-        return res
+
+        buckets = [[] for _ in range(max_ + 1)]
+
+        for num , fr in freq.items():
+            buckets[fr].append(num)
+
+        for i in range(max_ , 0 , -1):
+            res.extend(buckets[i])
+            if len(res) >= k:
+                break
+
+        return res[:k]
+

@@ -1,30 +1,31 @@
 from collections import defaultdict
 
 class Solution:
-    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+    def canFinish(self, numCourses: int, pre: List[List[int]]) -> bool:
         graph = defaultdict(list)
-        for u, v in prerequisites:
+        for u, v in pre:
             graph[u].append(v)
-        
+
         visited = set()
-        completion_status = {}  # Keep track of completion status for each node
-        
+        visiting = set()
+
         def dfs(node):
+            if node in visiting:
+                return False
             if node in visited:
-                return completion_status[node]  # Return the completion status of the node
-            
-            visited.add(node)
-            completion_status[node] = False  # Set completion status to False initially
-            
+                return True
+
+            visiting.add(node)
             for child in graph[node]:
                 if not dfs(child):
                     return False
-            
-            completion_status[node] = True  # Set completion status to True
+
+            visiting.remove(node)
+            visited.add(node)
             return True
-        
-        for node in range(numCourses):
-            if not dfs(node):
+
+        for course in range(numCourses):
+            if not dfs(course):
                 return False
-        
+
         return True

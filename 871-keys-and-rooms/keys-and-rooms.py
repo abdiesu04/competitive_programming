@@ -1,19 +1,14 @@
-class Solution:
-    def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
-        graph = defaultdict(list)
-        for i in range(len(rooms)):
-            graph[i].extend(rooms[i])
-
-        visited = set()
-
+class Solution(object):
+    def canVisitAllRooms(self, rooms):
+        n = len(rooms)
+        visited = [False] * n
+        visited[0] = True
+        
         def dfs(node):
-            visited.add(node)
-            if len(visited) == len(rooms): 
-                return True
-            for child in graph[node]:
-                if child not in visited:
-                    if dfs(child):
-                        return True
-            return False
-
-        return dfs(0)
+            for nei in rooms[node]:
+                if not visited[nei]:
+                    visited[nei] = True
+                    dfs(nei)
+        
+        dfs(0)
+        return all(visited)

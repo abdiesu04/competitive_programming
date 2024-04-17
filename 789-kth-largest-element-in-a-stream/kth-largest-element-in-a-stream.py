@@ -11,7 +11,7 @@ class KthLargest:
         heappush(self.heap, val)
         # print(self.heap)
 
-        while len(self.heap) > self.k:
+        for i in range(len(self.heap) -self. k):
             heappop(self.heap)
 
         return self.heap[0]

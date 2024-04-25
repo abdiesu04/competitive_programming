@@ -1,18 +1,25 @@
 class Solution:
     def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
-        graph = defaultdict(list)
+        n = len(edges)
+        parent = [i for i in range(n + 1)]
+
+        def find(x):
+            while x != parent[x]:
+                parent[x] = parent[parent[x]]
+                x = parent[x]
+            return x
+
+        def union(u, v):
+            ur = find(u)
+            vr = find(v)
+            if ur == vr:
+                return True
+            else:
+                parent[ur] = vr
+                return False
+
         for u, v in edges:
-            if self.isReachable(u, v, graph, set()):
+            if union(u, v):
                 return [u, v]
-            graph[u].append(v)
-            graph[v].append(u)
-    
-    def isReachable(self, src, dest, graph, visited):
-        if src == dest:
-            return True
-        visited.add(src)
-        for neighbor in graph[src]:
-            if neighbor not in visited:
-                if self.isReachable(neighbor, dest, graph, visited):
-                    return True
-        return False
+            else:
+                union(u , v)

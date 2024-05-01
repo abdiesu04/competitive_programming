@@ -1,13 +1,10 @@
 class Solution:
     def findComplement(self, num: int) -> int:
-        com = ''
-        while num > 0 :
-            
-            if num % 2 == 1:
-                com += '0'
-            else:
-                com += '1'
-            num = num // 2
-        return int(com[::-1],2)
-        
-        
+        return int(
+            ''.join(
+                [
+                    '1' if i == '0' else '0' for i in bin(num)[2:]
+                ]
+            ),
+            2
+        )

@@ -13,5 +13,7 @@ class Solution:
 
             if heap2:
                 w -= heappop(heap2) 
+            else:
+                break
           
         return w

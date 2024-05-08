@@ -6,14 +6,12 @@ class Solution:
         for i in range(len(profits)):
             heappush(heap1, (capital[i], profits[i]))
 
-        while k:
+        for _ in range(k):
             while heap1 and heap1[0][0] <= w:
                 _, profit = heappop(heap1)
                 heappush(heap2, -profit)
 
             if heap2:
-                w -= heappop(heap2)
-            
-            k -= 1
-
+                w -= heappop(heap2) 
+          
         return w

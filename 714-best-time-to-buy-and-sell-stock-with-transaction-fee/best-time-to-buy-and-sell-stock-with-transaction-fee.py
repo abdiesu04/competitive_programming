@@ -2,7 +2,7 @@ class Solution:
     def maxProfit(self, prices: List[int], fee: int) -> int:
         memo = {}
         
-        def maxProfit(idx, sell):
+        def dp(idx, sell):
             if idx >= len(prices):
                 return 0
             
@@ -10,11 +10,11 @@ class Solution:
                 return memo[(idx, sell)]
             
             if sell:
-                mx = max(prices[idx] - fee + maxProfit(idx + 1, False), maxProfit(idx + 1, True))
+                mx = max(prices[idx] - fee + dp(idx + 1, False), dp(idx + 1, True))
             else:
-                mx = max(-prices[idx] + maxProfit(idx + 1, True), maxProfit(idx + 1, False))
+                mx = max(-prices[idx] + dp(idx + 1, True), dp(idx + 1, False))
             
             memo[(idx, sell)] = mx
             return mx
         
-        return maxProfit(0, False)
+        return dp(0, False)

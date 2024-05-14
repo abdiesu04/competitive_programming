@@ -1,16 +1,28 @@
 class Solution:
     def stoneGame(self, piles: List[int]) -> bool:
-        @lru_cache(None)
-        def dp(left, right):
-            if left > right: return (0, 0)
-            
-            pickLeft = dp(left+1, right)
-            pickRight = dp(left, right - 1)
-            
-            if piles[left] + pickLeft[1] > piles[right] + pickRight[1]:  # If the left choice has higher score than the right choice
-                return piles[left] + pickLeft[1], pickLeft[0]  # then pick left
-            
-            return piles[right] + pickRight[1], pickRight[0]  # else pick right
+        memo = {} 
         
-        alexScore, leeScore = dp(0, len(piles) - 1)
-        return alexScore > leeScore
+        def dp(l, r, alice, bob):
+            if l == r:
+                return alice > bob
+
+            if (l, r, alice, bob) in memo:
+                return memo[(l, r, alice, bob)]
+            
+            if dp(l + 1, r, alice + piles[l], bob):
+                memo[(l, r, alice, bob)] = True
+                return True
+            if dp(l, r - 1, alice + piles[r], bob):
+                memo[(l, r, alice, bob)] = True
+                return True
+            if dp(l + 1, r, alice, bob + piles[l]):
+                memo[(l, r, alice, bob)] = True
+                return True
+            if dp(l, r - 1, alice, bob + piles[r]):
+                memo[(l, r, alice, bob)] = True
+                return True
+            
+            memo[(l, r, alice, bob)] = False
+            return False
+        
+        return dp(0, len(piles) - 1, 0, 0)

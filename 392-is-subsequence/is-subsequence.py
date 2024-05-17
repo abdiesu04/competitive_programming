@@ -1,12 +1,16 @@
 class Solution:
-    def isSubsequence(self, s: str, t: str) -> bool:
-        # use two pointer l for s and r for t
-        # add l if element is found in t and add r at every iteration
-        l , r = 0 , 0 
-        while l < len(s) and r < len(t):
-            if s[l] == t[r]:
-                l += 1
-            r += 1
+    def isSubsequence(self, s, t):
+        m, n = len(s), len(t)
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
 
-        return l == len(s)
-        
+        for i in range(n + 1):
+            dp[0][i] = 0
+
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                if s[i - 1] == t[j - 1]:
+                    dp[i][j] = dp[i - 1][j - 1] + 1
+                else:
+                    dp[i][j] = dp[i][j - 1]
+
+        return dp[m][n] == len(s)

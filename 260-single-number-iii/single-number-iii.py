@@ -1,10 +1,12 @@
 class Solution:
     def singleNumber(self, nums: List[int]) -> List[int]:
-        p=0
-        q=0
-        for i in nums :
-            p^=i
+        mapp = defaultdict(int)
         for i in nums:
-            if ((p&(-p))&i)==0 :
-                q^=i
-        return [p^q,q];
+            mapp[i] += 1
+        res = []
+        for key , value in mapp.items():
+            if value == 1:
+                res.append(key)
+        return res
+
+        

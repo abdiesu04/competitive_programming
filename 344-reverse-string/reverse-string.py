@@ -1,23 +1,9 @@
-# class Solution:
-#     def reverseString(self, s: List[str]) -> None:
-#         """
-#         Do not return anything, modify s in-place instead.
-#         """
-#         l , r = 0, len(s)-1
-#         while l < r: 
-#             s[l] , s[r] = s[r] , s[l]
-#             l+= 1
-#             r-= 1
-        
-        
-#Recursive Solution
-
 class Solution:
     def reverseString(self, s: List[str]) -> None:
-        def helper(l, r, s):
-            if l >= r:
-                return
-            s[l], s[r] = s[r], s[l]
-            helper(l + 1, r - 1, s)
-
-        helper(0, len(s) - 1, s)
+        left , right = 0 , len(s) - 1
+        while left < right:
+            s[left] , s[right]  = s[right] , s[left]
+            left  += 1
+            right -= 1
+            
+        return s

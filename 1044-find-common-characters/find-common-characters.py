@@ -1,15 +1,13 @@
 class Solution:
     def commonChars(self, words: List[str]) -> List[str]:
-        letters = words[0]
-        res = []
-        for i in letters:
-            j = 0 
-            while j < len(words):
-                if i in words[j]:
-                    words[j] = words[j].replace(i, '', 1)  # Remove the character from the word
-                    j += 1
-                else:
-                    break
-            if j == len(words):
-                res.append(i)
-        return res
+        common_count = Counter(words[0])
+    
+        for word in words[1:]:
+            common_count &= Counter(word)
+        
+        result = []
+        for char, count in common_count.items():
+            result.extend([char] * count)
+        
+        return result
+            

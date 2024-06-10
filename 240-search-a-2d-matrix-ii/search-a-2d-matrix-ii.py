@@ -11,3 +11,6 @@ class Solution:
             else:
                 return True
         return False
+
+#time complexity o(n+m)
+#space complexity 0(1)

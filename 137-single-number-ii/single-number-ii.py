@@ -1,10 +1,17 @@
 class Solution:
-    def singleNumber(self, nums: List[int]) -> int:
-        hash_map = {num: 0 for num in nums}
-        for num in nums:
-            hash_map[num] += 1
-        for key, value in hash_map.items():
-            if value == 1:
-                return key
+    def singleNumber(self, nums):
+        ans = 0
 
-                
+        for i in range(32):
+            bit_sum = 0
+            for num in nums:
+                if num < 0:
+                    num = num & (2**32-1)
+                bit_sum += (num >> i) & 1
+            bit_sum %= 3
+            ans |= bit_sum << i
+
+        if ans >= 2**31:
+            ans -= 2**32
+
+        return ans

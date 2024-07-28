@@ -1,27 +1,14 @@
 class Solution:
     def findContentChildren(self, g: List[int], s: List[int]) -> int:
-
-        # Sort g & s
         g.sort()
         s.sort()
         
-        # Set child to zero
         child = 0
+        cookie = 0
         
-        # Loop over s(cookies)
-        for cookie in s:
-            
-            # If child greed satisfy
-            if cookie >= g[child]:
-                
-                # Then increment child
+        while child < len(g) and cookie < len(s):
+            if s[cookie] >= g[child]:
                 child += 1
-                
-            # If no child left
-            if child == len(g):
-                
-                # Then return child
-                return child
+            cookie += 1
         
-        # Return child
         return child

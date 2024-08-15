@@ -1,13 +1,24 @@
+from typing import List
+
 class Solution:
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
-        intervals.sort(key= lambda x : x[0])
-        res = [intervals[0]]
+        if not intervals:
+            return []
 
-        for start , end in intervals[1:]:
-            lastEnd = res[-1][1]
+        # Sort intervals by starting time
+        intervals.sort(key=lambda x: x[0])
+        
+        res = []
+        begin, stop = intervals[0]
 
-            if start <= lastEnd:
-                res[-1][1] = max(lastEnd , end)
-            else:
-                res.append([start,end])
+        for i in range(1, len(intervals)):
+            start, end = intervals[i]
+
+            if stop < start:  
+                res.append([begin, stop])
+                begin, stop = start, end  
+            else: 
+                stop = max(stop, end)  
+        res.append([begin, stop])
+
         return res

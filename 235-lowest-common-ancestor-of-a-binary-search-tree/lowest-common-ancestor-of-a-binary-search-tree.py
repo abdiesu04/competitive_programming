@@ -16,5 +16,6 @@ class Solution:
                 return  dfs(node.right)
             elif p.val < node.val and q.val < node.val:
                 return  dfs(node.left)
-            return node
+            else:
+                return node
         return dfs(root)

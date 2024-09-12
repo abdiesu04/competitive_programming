@@ -1,8 +1,10 @@
 class Solution:
     def countGoodNumbers(self, n: int) -> int:
-        mod = (10 ** 9 ) + 7
-        even_cnt  = n // 2 if n % 2 == 0 else n // 2 + 1
-        odd_cnt = n // 2
-
-        res = pow(5 , even_cnt , mod) * pow(4 , odd_cnt, mod)
-        return res % mod
+        if n%2 == 1:
+            four = n//2
+            five = int(ceil(n/2))
+            return ((pow(5, five , 10**9 + 7)) * (pow(4, four, 10**9 + 7)))% (10**9 + 7)
+        else:
+            four = n//2
+            five = n//2
+            return ((pow(5, five,10**9 + 7)) * (pow(4, four,10**9 + 7)))% (10**9 + 7)

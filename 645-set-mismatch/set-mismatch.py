@@ -1,18 +1,14 @@
 class Solution:
     def findErrorNums(self, nums: List[int]) -> List[int]:
+        i = 0 
         n = len(nums)
-        missing  = (n * (n + 1) // 2) - sum(set(nums))
+        while i < n:
+            correct_index = nums[i] - 1
+            if nums[correct_index] != nums[i]:
+                nums[correct_index] , nums[i] = nums[i] , nums[correct_index]
+            else:
+                i += 1
 
-        mapp = defaultdict(int)
-        n = len(nums)
-        res = []
-        for i in range(n):
-            mapp[nums[i] - 1] += 1
-        print(mapp)
-        duplicate = None
-        for num , freq in mapp.items():
-            if freq > 1:
-                duplicate =num + 1
-
-
-        return [duplicate , missing]
+        for i in range(len(nums)):
+            if i + 1 != nums[i]:
+                return [nums[i] , i + 1]

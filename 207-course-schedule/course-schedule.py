@@ -1,31 +1,39 @@
-from collections import defaultdict
-
 class Solution:
     def canFinish(self, numCourses: int, pre: List[List[int]]) -> bool:
-        graph = defaultdict(list)
-        for u, v in pre:
-            graph[u].append(v)
+        #building a graph
 
-        visited = set()
-        visiting = set()
+        graph = defaultdict(list)
+
+        for u , v in pre:
+            graph[v].append(u)
+
+        # create two set one to store if the path has been visited and the other set tp track the visited node
+
+        visited = [False] * numCourses 
+
+        path_visited = [False] * numCourses 
+
+        #define a dfs function 
 
         def dfs(node):
-            if node in visiting:
+            #base case
+            if path_visited[node]:
                 return False
-            if node in visited:
+            if visited[node]:
                 return True
 
-            visiting.add(node)
+            visited[node] = True
+
+            path_visited[node] = True
+
             for child in graph[node]:
                 if not dfs(child):
                     return False
-
-            visiting.remove(node)
-            visited.add(node)
+            path_visited[node] = False
             return True
-
-        for course in range(numCourses):
-            if not dfs(course):
-                return False
-
+        for i in range(numCourses):
+            if not visited[i]:
+                if not dfs(i):
+                    return False
         return True
+        

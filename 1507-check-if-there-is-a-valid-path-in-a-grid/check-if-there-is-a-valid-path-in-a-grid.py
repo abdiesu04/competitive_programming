@@ -1,59 +1,32 @@
 class Solution:
     def hasValidPath(self, grid: List[List[int]]) -> bool:
-        #down=0
-        #left=1
-        #up=2
-        #right=3
-        d={
-            1:[[],[4,6,1],[],[3,5,1]],
-            2:[[2,6,5],[],[2,4,3],[]],
-            3:[[5,6,2],[1,4,6],[],[]],
-            4:[[6,2,5],[],[],[5,1,3]],
-            5:[[],[1,6,4],[2,3,4],[]],
-            6:[[],[],[2,3,4],[1,3,5]]
+        n , m = len(grid) , len(grid[0])
+        directions = {
+            1: [(0, -1, [1, 4, 6]), (0, 1, [1, 3, 5])],   # left-right
+            2: [(-1, 0, [2, 3, 4]), (1, 0, [2, 5, 6])],   # top-bottom
+            3: [(0, -1, [1, 4, 6]), (1, 0, [2, 5, 6])],   # left-bottom
+            4: [(0, 1, [1, 3, 5]), (1, 0, [2, 5, 6])],    # right-bottom
+            5: [(0, -1, [1, 4, 6]), (-1, 0, [2, 3, 4])],  # left-top
+            6: [(0, 1, [1, 3, 5]), (-1, 0, [2, 3, 4])]    # right-top
         }
 
-        row=len(grid)
-        col=len(grid[0])
+        def inbound(row , col):
+            return 0 <= row < n and 0 <= col < m
+        visited  = set()
 
-        def isvalid(i,j):
-            if 0<=i<row and 0<=j<col:
+        def dfs(row , col , visited):
+            if row == n - 1 and col == m - 1:
                 return True
+            visited.add((row, col))
+
+            for rc , cc , valid_neighbors in directions[grid[row][col]]:
+                nr , nc  = row + rc , col + cc
+                if inbound(nr,nc) and grid[nr][nc] in valid_neighbors and (nr,nc) not in visited:
+                    if dfs(nr,nc, visited):
+                        return True
             return False
 
-        visited=[[False for i in range(col)]for j in range(row)]
+        return dfs(0 , 0 , visited)
 
-        self.op=False
 
-        def dfs(i,j,visited):
-            
-            if i==row-1 and j==col-1:
-                self.op=True
-                return
-            
-            pval=grid[i][j]
-
-            #down
-            if isvalid(i+1,j) and visited[i+1][j]==False and grid[i+1][j] in d[pval][0]:
-                visited[i+1][j]=True
-                dfs(i+1,j,visited)
-                visited[i+1][j]=False
-            #left
-            if isvalid(i,j-1) and visited[i][j-1]==False and grid[i][j-1] in d[pval][1]:
-                visited[i][j-1]=True
-                dfs(i,j-1,visited)
-                visited[i][j-1]=False
-            #up
-            if isvalid(i-1,j) and visited[i-1][j]==False and grid[i-1][j] in d[pval][2]:
-                visited[i-1][j]=True
-                dfs(i-1,j,visited)
-                visited[i-1][j]=False
-            #right
-            if isvalid(i,j+1) and visited[i][j+1]==False and grid[i][j+1] in d[pval][3]:
-                visited[i][j+1]=True
-                dfs(i,j+1,visited)
-                visited[i][j+1]=False
-
-        visited[0][0]=True
-        dfs(0,0,visited)
-        return self.op
+        

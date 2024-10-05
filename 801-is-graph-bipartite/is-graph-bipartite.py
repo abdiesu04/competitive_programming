@@ -1,20 +1,22 @@
-
 class Solution:
     def isBipartite(self, graph: List[List[int]]) -> bool:
-        colors = [0 for _ in range(len(graph))]
+        n = len(graph)
+        colors = [-1] * n  # -1 means uncolored, 0 and 1 are the two colors
 
-        def dfs(node , col):
-            colors[node] = col
-            for child in graph[node]:
-                if colors[child] == col:
-                    return False
-                elif colors[child] == 0:
-                    if not dfs(child , 3 - col):
+        def dfs(node, color):
+            colors[node] = color  # Assign the current node a color
+            for neighbor in graph[node]:
+                if colors[neighbor] == -1:  # If the neighbor hasn't been visited
+                    if not dfs(neighbor, 1 - color):  # Assign the opposite color
                         return False
-            return True
-        
-        for i in range(len(graph)):
-            if colors[i] == 0:
-                if not dfs(i , 2):
+                elif colors[neighbor] == color:  # If the neighbor has the same color
                     return False
+            return True
+
+        # We need to check all components in case the graph is disconnected
+        for i in range(n):
+            if colors[i] == -1:  # If the node hasn't been visited
+                if not dfs(i, 0):  # Start DFS with color 0
+                    return False
+
         return True

@@ -1,30 +1,38 @@
 class Solution:
     def orangesRotting(self, grid: List[List[int]]) -> int:
-        fresh, time = 0, 0
-        row, col = len(grid), len(grid[0])
-        q = deque()
-        
-        def inbound(r, c):
-            return 0 <= r < len(grid) and 0 <= c < len(grid[0])
-        
-        for i in range(len(grid)):
-            for j in range(len(grid[0])):
-                if grid[i][j] == 1:
+        rottens  , empty , fresh = 0  , 0 , 0
+        queue = deque() 
+
+        directions = [(0,1), (0, -1) , (1,0) , (-1,0)]
+
+        def inbound(row , col):
+            return 0 <= row < len(grid) and 0 <= col < len(grid[0])
+
+        for row in range(len(grid)):
+            for col in range(len(grid[0])):
+                if grid[row][col] == 1:
                     fresh += 1
-                if grid[i][j] == 2:
-                    q.append((i, j))
-        directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
-        
-        while q and fresh > 0:
-            for _ in range(len(q)):
-                r, c = q.popleft()
-                for nr, nc in directions:
-                    new_r = r + nr
-                    new_c = c + nc
-                    if inbound(new_r, new_c) and grid[new_r][new_c] == 1:
-                        grid[new_r][new_c] = 2
+                elif grid[row][col] == 2:
+                    rottens += 1
+                    queue.append((row , col))
+                else:
+                    empty += 1
+        time = 0
+        while queue:
+            if fresh == 0:
+                break
+            for i in range(len(queue)):
+                row , col = queue.popleft()
+                for rc , cc in directions:
+                    nr , nc  = row + rc , col + cc
+                    if inbound(nr , nc) and grid[nr][nc] == 1:
+                        grid[nr][nc] = 2
                         fresh -= 1
-                        q.append((new_r, new_c))
+                       
+                        queue.append((nr , nc))
             time += 1
-            
+                        
         return time if fresh == 0 else -1
+
+
+        

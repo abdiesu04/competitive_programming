@@ -1,29 +1,30 @@
 class Solution:
     def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> int:
-        if grid[0][0] == 1:
-            return -1
+        directions = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
         
         n = len(grid)
-        q = deque([(0, 0, 1)])
-        visited = set([(0, 0)])
-        
-        def inbound(r, c):
-            return 0 <= r < n and 0 <= c < n
-        
-        directions = [(1, 0), (0, 1), (-1, 0), (0, -1), (-1, -1), (1, 1), (-1, 1), (1, -1)]
-        
-        while q:
-            r, c, length = q.popleft()
-            
-            if r == n - 1 and c == n - 1:
-                return length
-            
-            for dr, dc in directions:
-                nr = r + dr
-                nc = c + dc
-                
-                if inbound(nr, nc) and grid[nr][nc] == 0 and (nr, nc) not in visited:
-                    q.append((nr, nc, length + 1))
-                    visited.add((nr, nc))
-        
+        m = len(grid[0])
+
+        queue = deque([(0,0)])
+        time = 1
+        visited = set((0,0))
+
+        if grid[0][0] != 0 or grid[n-1][m-1] != 0:
+            return -1
+
+        def inbound(row, col):
+            return 0 <= row < n and 0 <= col < m and (row, col) not in visited
+
+        while queue:
+            for i in range(len(queue)):
+                row , col = queue.popleft()
+                if row == n -1 and col == m -1:
+                    return time
+                for rc , cc in directions:
+                    nr , nc  = row + rc , cc + col
+                    if inbound(nr, nc) and grid[nr][nc] == 0 and (nr,nc) not in visited:
+                        queue.append((nr , nc))
+                        visited.add((nr,nc))
+
+            time += 1
         return -1

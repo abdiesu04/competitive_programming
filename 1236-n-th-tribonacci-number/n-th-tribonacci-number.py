@@ -1,8 +1,10 @@
 class Solution:
     def tribonacci(self, n: int) -> int:
-        if n < 2:
-            return n
-        a , b , c  = 0 , 1 , 1
-        for i in range(n-2):
-            a , b, c  = b , c , a + b + c
-        return c
+        dp = [0 , 1 , 1]
+
+        for i in range(n):
+            ans = sum(dp)
+            dp[0] = dp[1]
+            dp[1] = dp[2]
+            dp[2] = ans
+        return dp[0]

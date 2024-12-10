@@ -1,26 +1,23 @@
 class Solution:
     def maximumLength(self, s: str) -> int:
-        mapp = defaultdict(int)
-        left = 0
+        left, right = 0, len(s)
 
-        def changeToMapp(substring:str):
-            letter  = substring[0]
-            print(substring , letter)
-            n = len(substring)
-            for i in range(1,n+1):
-                mapp[(letter*n , n)] += i
-                n -= 1
+        def canI(length):
 
-        for right in range(1,len(s)):
-            if s[right] != s[left]:
-                changeToMapp(s[left:right])
-                left = right
-        changeToMapp(s[left:len(s)])
+            mapp = defaultdict(int)  
+            for i in range(len(s) - length + 1):
+                subs = s[i:i + length] 
+                if len(set(subs)) == 1: 
+                    mapp[subs] += 1  
+                    if mapp[subs] >= 3: 
+                        return True 
+            return False 
 
-        print(mapp)
-            
-        ans = -1
-        for key , val in mapp.items():
-            if val > 2:
-                ans  = max(ans , key[1])
-        return ans
+        while left < right:
+            mid = left + (right - left + 1) // 2  
+            if canI(mid):
+                left = mid  
+            else:
+                right = mid - 1  
+
+        return right if right > 0 and canI(right) else -1
